@@ -46,6 +46,56 @@ select upper(concat(customer_first_name, ' ', last_name)), email, lower(city) fr
 
 
 
+CREATE TABLE books(
+  book_id serial primary key,
+  title varchar(200),
+  author varchar(100),
+  genre varchar(50),
+  price decimal(10, 2),
+  publication_year integer,
+  stock_quantity integer
+);
+
+INSERT INTO books(book_id, title, author, genre, price, publication_year, stock_quantity) 
+VALUES
+  (1, 'The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 12.99, 1925, 45),
+  (2, 'To Kill a Mockingbird', 'Harper Lee', 'Fiction', 14.99, 1960, 32),
+  (3, '1984', 'George Orwell', 'Science Fiction', 13.99, 1949, 28),
+  (4, 'Pride and Prejudice', 'Jane Austen', 'Romance', 11.99, 1813, 50),
+  (5, 'The Catcher in the Rye', 'J.D. Salinger', 'Fiction', 12.99, 1951, 22),
+  (6, 'Harry Potter and the Sorcerer Stone', 'J.K. Rowling', 'Fantasy', 19.99, 1997, 60),
+  (7, 'The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 15.99, 1937, 38),
+  (8, 'Brave New World', 'Aldous Huxley', 'Science Fiction', 13.99, 1932, 25),
+  (9, 'The Lord of the Rings', 'J.R.R. Tolkien', 'Fantasy', 29.99, 1954, 41),
+  (10, 'Animal Farm', 'George Orwell', 'Fiction', 10.99, 1945, 55),
+  (11, 'Fahrenheit 451', 'Ray Bradbury', 'Science Fiction', 12.99, 1953, 30),
+  (12, 'The Great Adventure', 'John Anderson', 'Fiction', 16.99, 2020, 18),
+  (13, 'Mystery in Paris', 'Marie Dubois', 'Mystery', 14.99, 2019, 27),
+  (14, 'Romance in Rome', 'Isabella Rossi', 'Romance', 13.99, 2021, 35);
+
+
+  --QUESTION : 1
+select title, price from books order by price asc;
+
+--QUESTION : 3 
+select title from books where title like 'The%';
+
+
+-- QUESTION : 5
+select * from books where genre = 'Fantasy';
+
+ --QUESTION : 7
+select genre, avg(price) as avgPrice from books group by genre having avg(price) > 14;
+
+
+
+
+
+
+
+
+
+
 
 
 
