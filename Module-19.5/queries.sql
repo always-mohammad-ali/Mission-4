@@ -66,7 +66,8 @@ select * from courses order by course_id limit 3;
 update courses set price = price * 1.10 where category = 'Programming';
 select course_title, price, category from courses where category = 'Programming'
 
-
+--Question : 7 Show course categories where the average course price is greater than 60 using HAVING. 
+select category, avg(price) from courses group by category having avg(price) > 60;
 
 
 create table enrollments(
@@ -101,6 +102,55 @@ delete from enrollments where progress_percentage is null;
 
 --Question : 6 Find the total paid amount per course category using GROUP BY.
 select category, sum(price) from courses group by category;
+
+
+--Question : 8 Count how many students are enrolled in each course.
+select c.course_title, c.course_id, count(e.student_id) as student_count from courses c left join enrollments e on c.course_id = e.course_id group by c.course_id, c.course_title order by student_count desc; 
+
+
+--Question : 10 Display student full name, course title, and paid amount using an INNER JOIN.
+select concat(s.first_name,' ', s.last_name) as full_name, c.course_title, e.paid_amount from students s 
+  join enrollments e on s.student_id = e.student_id 
+  join courses c on e.course_id = c.course_id
+  order by full_name, c.course_title;
+
+
+--Question : 11 Display all students and their enrolled courses.Include students who have not enrolled in any course using a LEFT JOIN.
+select concat(s.first_name, ' ', s.last_name) as full_name, c.course_title, e.paid_amount from students s 
+left join enrollments e on s.student_id = e.student_id
+left join courses c on e.course_id = c.course_id 
+order by full_name, c.course_title;
+
+--Question : 12 Display all courses and their enrolled students. Include courses that have no enrollments using a RIGHT JOIN.
+select c.course_title, coalesce(concat(s.first_name, ' ', s.last_name), 'no student enrolled') as full_name from courses c 
+left join enrollments e on c.course_id = e.course_id
+left join students s on s.student_id = e.student_id;
+
+--Question : 13 Display all students and all courses, even if there is no matching enrollment, using a FULL JOIN.
+select concat(s.first_name, ' ', s.last_name) as full_name, c.course_title from students s 
+full join enrollments e on s.student_id = e.student_id
+full join courses c on e.course_id = c.course_id
+order by full_name, c.course_title;
+
+--Question : 14 Show the number of enrollments per year based on enrollment_date.
+select extract(year from enrollment_date) as enrollment_year, count(*) as number_of_enrollments from enrollments group by extract(year from enrollment_date);
+
+
+--Question : 15 Find the average progress percentage per course, ignoring NULL values.
+select c.course_title, avg(e.progress_percentage) from enrollments e 
+left join courses c on e.course_id = c.course_id
+group by c.course_title;
+
+
+SELECT 
+    c.course_title,
+    AVG(e.progress_percentage) AS avg_progress,
+    COUNT(e.progress_percentage) AS non_null_count,
+    COUNT(*) AS total_enrollments
+FROM courses c  -- Start with ALL courses!
+LEFT JOIN enrollments e ON c.course_id = e.course_id
+GROUP BY c.course_id, c.course_title
+ORDER BY c.course_title;
 
 
 
